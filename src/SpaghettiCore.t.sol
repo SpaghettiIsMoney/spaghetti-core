@@ -30,6 +30,7 @@ contract SpaghettiCoreTest is DSTest {
         core.initYFI();
         core.initLEND();
         core.initWETH();
+        core.initWBTC();
         core.initUNI();
         token = core.spaghetti();
         mkrPool = core.mkrPool();
