@@ -839,6 +839,7 @@ contract SpaghettiFactory {
     PASTAPool public snxPool;
     PASTAPool public lendPool;
     PASTAPool public yfiPool;
+    PASTAPool public wbtcPool;
     PASTAPool public uniswapPool;
     address public uniswap;
     address public weth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
@@ -849,6 +850,7 @@ contract SpaghettiFactory {
     }
 
     function initMKR() public {
+        require(address(mkrPool) == address(0), "Already initialized");
         mkrPool = new PASTAPool(address(spaghetti), 0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2, 7 days, now + 3 hours);
         mkrPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(mkrPool), 1000000000000000000000000);
@@ -858,6 +860,7 @@ contract SpaghettiFactory {
     }
 
     function initCOMP() public {
+        require(address(compPool) == address(0), "Already initialized");
         compPool = new PASTAPool(address(spaghetti), 0xc00e94Cb662C3520282E6f5717214004A7f26888, 7 days, now + 3 hours);
         compPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(compPool), 1000000000000000000000000);
@@ -867,6 +870,7 @@ contract SpaghettiFactory {
     }
 
     function initLINK() public {
+        require(address(linkPool) == address(0), "Already initialized");
         linkPool = new PASTAPool(address(spaghetti), 0x514910771AF9Ca656af840dff83E8264EcF986CA, 7 days, now + 3 hours);
         linkPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(linkPool), 1000000000000000000000000);
@@ -876,6 +880,7 @@ contract SpaghettiFactory {
     }
 
     function initLEND() public {
+        require(address(lendPool) == address(0), "Already initialized");
         lendPool = new PASTAPool(address(spaghetti), 0x80fB784B7eD66730e8b1DBd9820aFD29931aab03, 7 days, now + 3 hours);
         lendPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(lendPool), 1000000000000000000000000);
@@ -885,6 +890,7 @@ contract SpaghettiFactory {
     }
 
     function initSNX() public {
+        require(address(snxPool) == address(0), "Already initialized");
         snxPool = new PASTAPool(address(spaghetti), 0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F, 7 days, now + 3 hours);
         snxPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(snxPool), 1000000000000000000000000);
@@ -894,6 +900,7 @@ contract SpaghettiFactory {
     }
 
     function initYFI() public {
+        require(address(yfiPool) == address(0), "Already initialized");
         yfiPool = new PASTAPool(address(spaghetti), 0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e, 7 days, now + 3 hours);
         yfiPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(yfiPool), 1000000000000000000000000);
@@ -903,6 +910,7 @@ contract SpaghettiFactory {
     }
 
     function initWETH() public {
+        require(address(wethPool) == address(0), "Already initialized");
         wethPool = new PASTAPool(address(spaghetti), 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2, 7 days, now + 3 hours);
         wethPool.setRewardDistribution(address(this));
         spaghetti.transfer(address(wethPool), 1000000000000000000000000);
@@ -911,11 +919,22 @@ contract SpaghettiFactory {
         wethPool.renounceOwnership();
     }
 
+    function initWBTC() public {
+        require(address(wbtcPool) == address(0), "Already initialized");
+        wbtcPool = new PASTAPool(address(spaghetti), 0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599, 7 days, now + 3 hours);
+        wbtcPool.setRewardDistribution(address(this));
+        spaghetti.transfer(address(wbtcPool), 1000000000000000000000000);
+        wbtcPool.notifyRewardAmount(spaghetti.balanceOf(address(wbtcPool)));
+        wbtcPool.setRewardDistribution(address(0));
+        wbtcPool.renounceOwnership();
+    }
+
     function initUNI() public {
+        require(address(uniswapPool) == address(0), "Already initialized");
         uniswap = uniswapFactory.createPair(weth, address(spaghetti));
-        uniswapPool = new PASTAPool(address(spaghetti), uniswap, 28 days, now + 27 hours);
+        uniswapPool = new PASTAPool(address(spaghetti), uniswap, 21 days, now + 27 hours);
         uniswapPool.setRewardDistribution(address(this));
-        spaghetti.transfer(address(uniswapPool), 8000000000000000000000000);
+        spaghetti.transfer(address(uniswapPool), 7000000000000000000000000);
         uniswapPool.notifyRewardAmount(spaghetti.balanceOf(address(uniswapPool)));
         uniswapPool.setRewardDistribution(address(0));
         uniswapPool.renounceOwnership();
