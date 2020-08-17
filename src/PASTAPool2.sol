@@ -621,11 +621,11 @@ contract LPTokenWrapper {
     }
 }
 
-contract PASTAPool is LPTokenWrapper, IRewardDistributionRecipient {
+contract PASTAPool2 is LPTokenWrapper, IRewardDistributionRecipient {
     IERC20 public spaghetti;
-    uint256 public DURATION = 7 days;
+    uint256 public DURATION = 21 days;
 
-    uint256 public starttime = 1597795200;
+    uint256 public starttime = 1597881600;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
     uint256 public lastUpdateTime;
