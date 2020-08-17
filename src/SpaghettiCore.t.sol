@@ -122,8 +122,9 @@ contract SpaghettiCoreTest is DSTest {
     IERC20 lend = IERC20(0x80fB784B7eD66730e8b1DBd9820aFD29931aab03);
     IERC20 snx = IERC20(0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F);
     IERC20 weth = IERC20(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
-    IERC20 link = IERC20(0x514910771AF9Ca656af840dff83E8264EcF986CA);
+    IERC20 link = IERC20(0x29E240CFD7946BA20895a7a02eDb25C210f9f324);
     IERC20 yfi = IERC20(0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e);
+    IERC20 yycrv = IERC20(0x5dbcF33D8c2E976c6b560249878e6F1491Bca25c);
     IERC20 univ2;
 
     IUniswapV2Router01 router = IUniswapV2Router01(0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D);
@@ -164,7 +165,7 @@ contract SpaghettiCoreTest is DSTest {
             keccak256(abi.encode(address(this), uint256(1))),
             bytes32(uint256(999999999999 ether))
         );
-        hevm.warp(now + 3 hours);
+        hevm.warp(now + 24 hours);
         maker.approve(address(mkrPool), uint256(-1));
         mkrPool.stake(1 ether);
         hevm.warp(now + 10 days);
@@ -192,7 +193,7 @@ contract SpaghettiCoreTest is DSTest {
         );
         assertEq(wbtc.balanceOf(address(this)), 999999999999 ether);
 
-        hevm.warp(now + 3 hours);
+        hevm.warp(now + 24 hours);
         wbtc.approve(address(wbtcPool), uint256(-1));
         wbtcPool.stake(1 ether);
         hevm.warp(now + 10 days);
@@ -213,36 +214,36 @@ contract SpaghettiCoreTest is DSTest {
 
     function test_uni() public {
         hevm.store(
-            address(weth),
-            keccak256(abi.encode(address(this), uint256(3))),
+            address(yycrv),
+            keccak256(abi.encode(address(this), uint256(0))),
             bytes32(uint256(999999 ether))
         );
-        assertEq(weth.balanceOf(address(this)), 999999 ether);
+        assertEq(yycrv.balanceOf(address(this)), 999999 ether);
         hevm.store(
             address(token),
             keccak256(abi.encode(address(this), uint256(1))),
             bytes32(uint256(999999 ether))
         );
         assertEq(token.balanceOf(address(this)), 999999 ether);
-        weth.approve(address(router), uint(-1));
+        yycrv.approve(address(router), uint(-1));
         token.approve(address(router), uint(-1));
 
         uint exp = block.timestamp + 1 days;
-        router.addLiquidity(address(weth), address(token), 999999 ether, 999999 ether, 999999 ether, 999999 ether, address(this), exp);
+        router.addLiquidity(address(yycrv), address(token), 999999 ether, 999999 ether, 999999 ether, 999999 ether, address(this), exp);
 
         assertEq(univ2.balanceOf(address(this)), 994986442119182848113525);
 
-        hevm.warp(now + 27 hours);
+        hevm.warp(now + 48 hours);
         univ2.approve(address(uniswapPool), uint256(-1));
         uniswapPool.stake(1 ether);
-        hevm.warp(now + 25 days);
+        hevm.warp(now + 26 days);
         uniswapPool.exit();
         assertEq(token.balanceOf(address(this)),  6860699999999999999201664);
         assertEq(univ2.balanceOf(address(this)), 994986442119182848113525);
 
         univ2.approve(address(router), uint(-1));
         exp = block.timestamp + 1 days;
-        router.removeLiquidity(address(weth), address(token), univ2.balanceOf(address(this)), 0, 0, address(this), exp);
+        router.removeLiquidity(address(yycrv), address(token), univ2.balanceOf(address(this)), 0, 0, address(this), exp);
     }
 
 }
