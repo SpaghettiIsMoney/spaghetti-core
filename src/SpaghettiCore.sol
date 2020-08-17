@@ -780,9 +780,9 @@ contract SpaghettiToken is DSMath {
     bytes32                                           public  name = "Spaghetti";
 
     constructor(address chef) public {
-        // hard limit 16,000,000 PASTA
-        totalSupply = 16000000000000000000000000;
-        balanceOf[chef] = 16000000000000000000000000;
+        // hard limit 15,000,000 PASTA
+        totalSupply = 15000000000000000000000000;
+        balanceOf[chef] = 15000000000000000000000000;
     }
 
     event Approval(address indexed src, address indexed guy, uint wad);
